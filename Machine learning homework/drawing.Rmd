@@ -1,0 +1,75 @@
+---
+title: "Plot"
+output: html_document
+date: "2023-03-04"
+---
+
+
+```{r cars}
+library(ggplot2)
+data<-read.csv(file="C:/Users/86152/Desktop/data2.txt",sep=' ',header=T)
+ggplot(data,aes(x=FPR,y=TPR))+geom_area(fill="black",position = 'identity',alpha=0.5)+geom_line(size=1.5)+scale_x_continuous(limits = c(0,1),expand=c(0,0))+scale_y_continuous(limits = c(0,1),expand = c(0,0))+labs(title="KNN算法ROC图")+theme_bw()+theme(axis.title = element_text(size=14,face="bold"))+theme(axis.text = element_text(size=12,face="bold"))+theme(plot.title = element_text(size=20,face="bold",hjust = 0.5))
+```
+
+
+
+```{r}
+library(fpc)
+library(ggplot2)
+##原数据集属性过多，需要降维后作图，这里进行了主成分分析
+data<-read.csv(file="C:/Users/86152/Desktop/iris_data_predict.csv",header = T)
+type<-data$Predict
+strtype<-data$type
+data<-data[0:4]
+data<-prcomp(data)
+data<-data.frame(data$x[,1],data$x[,2],strtype,type)
+colnames(data)<-c("x","y","name","type")
+data$type<-as.factor(data$type)
+ggplot(data,aes(x=x,y=y,color=name))+geom_point(size=3)+
+  labs(title="Iris真实情况",color="Type")+
+  theme_bw()+
+  scale_x_continuous(limits = c(-4,4))+
+  scale_y_continuous(limits = c(-1.5,1.5))+
+  theme(axis.title = element_text(size=14,face="bold"))+
+  theme(axis.text = element_text(size=12,face="bold"))+
+  theme(plot.title=element_text(hjust =0.5,size=20,face="bold"))+
+  theme(legend.title = element_text(size=12,face="bold"))+
+  theme(legend.text = element_text(size=10,face="bold"))
+ggplot(data,aes(x=x,y=y,color=type))+geom_point(size=3)+
+  labs(title="Iris K-means预测情况",color="Type")+
+  theme_bw()+
+  scale_x_continuous(limits = c(-4,4))+
+  scale_y_continuous(limits = c(-1.5,1.5))+
+  theme(axis.title = element_text(size=14,face="bold"))+
+  theme(axis.text = element_text(size=12,face="bold"))+
+  theme(plot.title=element_text(hjust =0.5,size=20,face="bold"))+
+  theme(legend.title = element_text(size=12,face="bold"))+
+  theme(legend.text = element_text(size=10,face="bold"))
+```
+
+```{r}
+#大致和前面代码相同
+library(fpc)
+library(ggplot2)
+data<-read.csv(file="C:/Users/86152/Desktop/iris_data_predict2.csv",header = T)
+predict<-data$Predict
+data<-data[0:4]
+data<-prcomp(data)
+data<-data.frame(data$x[,1],data$x[,2],predict)
+colnames(data)<-c("x","y","predict")
+data$predict<-as.factor(data$predict)
+data
+ggplot(data,aes(x=x,y=y,color=predict))+geom_point(size=3)+
+  labs(title="DBSCAN聚类结果",color="Type")+
+  theme_bw()+
+  scale_x_continuous(limits = c(-4,4))+
+  scale_y_continuous(limits = c(-1.5,1.5))+
+  scale_color_manual(values=c("#737373","#ff6666","#99ccff"),labels=c("Noise","0","1"))+
+  theme(axis.title = element_text(size=14,face="bold"))+
+  theme(axis.text = element_text(size=12,face="bold"))+
+  theme(plot.title=element_text(hjust =0.5,size=20,face="bold"))+
+  theme(legend.title = element_text(size=12,face="bold"))+
+  theme(legend.text = element_text(size=10,face="bold"))
+```
+```
+
